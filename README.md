@@ -1,4 +1,4 @@
-# ✈️ Flight Delay Analysis & Prediction
+# ✈️ Understanding Flight Delays in the U.S.
 
 ##### *A real-world ML project using 327k+ U.S. flight records to uncover delay patterns and predict late departures and arrivals using a MultiOutput Logistic Regression model.*
 
