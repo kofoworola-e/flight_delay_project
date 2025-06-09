@@ -111,7 +111,9 @@ The deployed model is a **Logistic Regression** classifier wrapped in a **MultiO
 
 ## 🌐 Streamlit App
 Deployed at: [flightdelayanalytics.streamlit.app](https://flightdelayanalytics.streamlit.app)
+
 Located in: `streamlit_app/Home.py`
+
 Dependencies in: `streamlit_app/requirements.txt`
 
 ### 🔍 App Features
