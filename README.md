@@ -175,7 +175,7 @@ flight_delay_project/
    Integrate tailored suggestions in the app (e.g., "Consider early morning flights" or "Avoid EWR–CAE on Fridays") using NLP or LLMs to generate user-friendly advice based on predicted risks.
 
 2. **Model Improvement**
-   Experiment with advanced models (e.g., Random Forest, XGBoost, or stacking) and hyperparameter tuning to boost **Recall** and **PR-AUC**.
+  Experiment with advanced models (e.g., Random Forest, XGBoost, or stacking) and hyperparameter tuning to boost **Recall** and **PR-AUC**. I also plan to revisit **feature engineering** to create more informative and predictive variables that can enhance the model’s ability to detect delay risks.
 
 3. **Deploy Enhancements**
    The app is already live, but I plan to improve its responsiveness, error handling, and UI polish (e.g., airline logos, route maps).
@@ -204,7 +204,7 @@ Working on this project was both enriching and exciting. Here are some key thing
 ### 🧠 Insights Gained
 
 * Delays often follow **predictable patterns** across time of day, seasons, routes, and specific carriers — and even a simple model can reveal useful, actionable insights.
-* Visual storytelling is just as important as the model — I found that clear, interactive dashboards help surface patterns that even good metrics can hide.
+* Visual storytelling is just as important as the model — I found that clear, interactive charts help surface patterns that even good metrics can hide.
 
 ### 💡 Reflections
 
