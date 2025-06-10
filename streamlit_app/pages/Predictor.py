@@ -108,7 +108,7 @@ def preprocess_user_input(user_input_dict):
     origin, dest = route.split(" - ")
 
     # Get distance haul
-    dist_haul = user_input_dict.get("dist_haul", 'Short')
+    #dist_haul = user_input_dict.get("dist_haul", 'Short')
 
     # Map airline and route-level features
     arr_avg, dep_avg = map_airline_delay_features(airline)
@@ -135,7 +135,7 @@ def preprocess_user_input(user_input_dict):
     user_input_dict.update({
         "origin": origin,
         "dest": dest,
-        "dist_haul": dist_haul,
+        #"dist_haul": dist_haul,
         "airline_avg_arr_delay": arr_avg,
         "airline_avg_dep_delay": dep_avg,
         "route_density": route_density,
@@ -199,7 +199,7 @@ def generate_recommendations(shap_values_dict, feature_names, df_input, model_pr
 
     # Extract input values once
     val_dep_hour = df_input["dep_hour"].values[0]
-    val_dist_haul = df_input["dist_haul"].values[0]
+    #val_dist_haul = df_input["dist_haul"].values[0]
     val_month = df_input["month_delay_score"].values[0]
     val_day = df_input["dow_delay_score"].values[0]
     val_airline_arr = df_input["airline_avg_arr_delay"].values[0]
@@ -236,10 +236,10 @@ def generate_recommendations(shap_values_dict, feature_names, df_input, model_pr
             "Flights on this day of the week tend to be more prone to delays.",
             "Traveling on less busy days may reduce delay risk."
         ),
-        "dist_haul": (
-            f"Your flight is classified as a '{val_dist_haul}' haul, which affects delay likelihood.",
-            "Sometimes shorter or longer haul flights have different risk patterns."
-        ),
+        #"dist_haul": (
+           # f"Your flight is classified as a '{val_dist_haul}' haul, which affects delay likelihood.",
+            #"Sometimes shorter or longer haul flights have different risk patterns."
+       # ),
     }
 
     for output_index, shap_values in shap_values_dict.items():
@@ -279,7 +279,7 @@ with st.form("flight_form"):
     month = st.selectbox("Month", list(month_score_map.keys()))
     day_of_week = st.selectbox("Day of Week", list(dow_score_map.keys()))
     dep_hour = st.number_input("Scheduled Departure Hour (0–23)", min_value=0, max_value=23, value=12)
-    distance_group = st.selectbox("Distance", ["Short", "Medium", "Long"])
+    #distance_group = st.selectbox("Distance", ["Short", "Medium", "Long"])
 
     submitted = st.form_submit_button("Predict Delay")
 if submitted:
@@ -289,7 +289,7 @@ if submitted:
         "month": month,
         "day_of_week": day_of_week,
         "dep_hour": dep_hour,
-        "dist_haul": distance_group
+        #"dist_haul": distance_group
     }
 
     df_input = preprocess_user_input(user_input)
