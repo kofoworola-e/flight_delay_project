@@ -1217,3 +1217,43 @@ fig.update_traces(
 )
 
 st.plotly_chart(fig)
+
+st.markdown("---")
+
+# ------------ Conclusion And Recommendations -------------
+st.markdown("## 📌 Conclusion & Actionable Recommendations")
+
+st.markdown("""
+After analyzing 327,000+ U.S. flights from 2023, clear patterns emerged in how delays are shaped by timing, airline performance, and airport operations. These findings offer actionable insights for travelers, airlines, and airport authorities.
+
+### 🧭 Timing Drives Delay Risk
+
+Delays spike in **June–July** and **December**, driven by holidays and weather. In contrast, **fall months** and **early mornings (12 AM–9 AM)** see the fewest delays. **Tuesdays and Wednesdays** are the worst days; **Thursdays** tend to be most reliable.
+
+**Recommendations:**
+
+* **Travelers:** Fly Thursday mornings during off-peak seasons; avoid evening or midweek flights.
+* **Airlines:** Adjust schedules around peak delay periods and strengthen evening operations.
+
+### ✈️ Airline Performance Varies Widely
+
+**Frontier**, **ExpressJet**, and **Mesa** top the delay charts (>60%), while **Hawaiian**, **Alaska**, and **US Airways** show strong on-time performance. Arrival delays remain a problem even for top airlines.
+
+**Recommendations:**
+
+* Benchmark top performers for turnaround and scheduling.
+* Address arrival inefficiencies through buffer time and better ground handling.
+
+### 🛫 Airports Are Delay Hotspots
+
+**Newark (EWR)** is the most delay-prone among NYC airports. Some small airports (like **Jackson Hole**) face high delays despite low volume. Major hubs like **ATL** and **ORD** perform relatively well. Clustering revealed consistent under- and over-performers.
+
+**Recommendations:**
+
+* **Airports:** Upgrade infrastructure at delay-heavy locations; improve traffic control in busy airspaces.
+* **Travelers:** Avoid tight layovers at known delay hubs (e.g. EWR, JAC); research airport performance before booking.
+
+### 💡 Final Takeaway
+
+Flight delays follow clear patterns — they’re not just chance events. By understanding when, where, and why delays occur, both travelers and industry players can take proactive steps to minimize disruption and improve the flying experience.
+""")
