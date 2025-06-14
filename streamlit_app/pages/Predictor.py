@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import joblib
+import cloudpickle
 import os
 import plotly.graph_objects as go
 import shap
@@ -99,8 +99,9 @@ dow_score_map = {
 # Cache pipeline loading for efficiency
 @st.cache_resource
 def load_pipeline():
-    pipeline_path = os.path.join(os.path.dirname(__file__), "..", "logreg_pipeline.joblib")
-    return joblib.load(pipeline_path)
+    pipeline_path = os.path.join(os.path.dirname(__file__), "..", "logreg_pipeline.pkl")
+    with open(pipeline_path, "rb") as f:
+        return cloudpickle.load(f)
 
 def preprocess_user_input(user_input_dict):
     # Extract airline and route
@@ -165,8 +166,9 @@ def predict_with_pipeline(df):
         return None
 
 # ------ SHAP Values -------
-def get_shap_values(df_input, pipeline_path="logreg_pipeline.joblib"):
-    pipeline = joblib.load(pipeline_path)
+def get_shap_values(df_input, pipeline_path="logreg_pipeline.pkl"):
+    with open(pipeline_path, "rb") as f:
+        pipeline = cloudpickle.load(f)
 
     preprocessor = pipeline.named_steps['preprocessor']
     multi_clf = pipeline.named_steps['classifier']
