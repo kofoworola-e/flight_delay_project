@@ -20,7 +20,7 @@ st.write("Enter flight details below to predict if your flight will be delayed."
 @st.cache_data(show_spinner=False)
 def load_lookups_from_drive():
     airline_delay_file_id = "1ed2CeYXgwrWEc-aecGBfwRTBbR-Rkilu"
-    route_density_file_id = "1-1LadBkeEYEsCfC6LdK1Ssv89Hthhxls"
+    route_dist_file_id = "1aGMpN-hrjbp7PWxk6t9X7v41ecjjxqsR" 
     dest_cluster_file_id = "17DMA5-fWipMqQPGCNYD_cXIIuIphTB8Y"
     route_cluster_file_id = "1H8I0YOC6zIIHARBIkumuxcVe0njoo04g"
 
@@ -28,20 +28,20 @@ def load_lookups_from_drive():
 
     # Construct URLs
     airline_url = f"{base_url}{airline_delay_file_id}"
-    route_url = f"{base_url}{route_density_file_id}"
+    route_url = f"{base_url}{route_dist_file_id}"
     dest_cluster_url = f"{base_url}{dest_cluster_file_id}"
     route_cluster_url = f"{base_url}{route_cluster_file_id}"
 
     # Read CSVs
     airline_delay_lookup = pd.read_csv(airline_url)
-    route_density_lookup = pd.read_csv(route_url)
+    route_dist_lookup = pd.read_csv(route_url)
     dest_cluster_lookup = pd.read_csv(dest_cluster_url)
     route_cluster_lookup = pd.read_csv(route_cluster_url)
 
-    return airline_delay_lookup, route_density_lookup, dest_cluster_lookup, route_cluster_lookup
+    return airline_delay_lookup, route_dist_lookup, dest_cluster_lookup, route_cluster_lookup
 
 # Load all four lookup tables
-airline_delay_lookup, route_density_lookup, dest_cluster_lookup, route_cluster_lookup = load_lookups_from_drive()   
+airline_delay_lookup, route_dist_lookup, dest_cluster_lookup, route_cluster_lookup = load_lookups_from_drive()   
 
 # ------- Mapping Functions
 def map_airline_delay_features(airline_name):
@@ -51,9 +51,12 @@ def map_airline_delay_features(airline_name):
         row.iloc[0]['airline_avg_dep_delay'] if not row.empty else 0
     )
 
-def map_route_density(route):
-    row = route_density_lookup[route_density_lookup['route'] == route]
-    return row.iloc[0]['route_density'] if not row.empty else 0
+def map_route_dist(route):
+    row = route_dist_lookup[route_dist_lookup["route"] == route]
+    return(
+        row.iloc[0]['route_density'] if not row.empty else 0,
+        row.iloc[0]['dist_haul'] if not row.empty else 0
+    )
 
 def map_dest_cluster(dest):
     row = dest_cluster_lookup[dest_cluster_lookup['dest'] == dest]
@@ -111,12 +114,11 @@ def preprocess_user_input(user_input_dict):
     # Split route into origin and destination
     origin, dest = route.split(" - ")
 
-    # Get distance haul
-    #dist_haul = user_input_dict.get("dist_haul", 'Short')
-
     # Map airline and route-level features
     arr_avg, dep_avg = map_airline_delay_features(airline)
-    route_density = map_route_density(route)
+    route_density, dist_haul = map_route_dist(route)
+
+    # Map destination and route clusters
     dest_cluster = map_dest_cluster(dest)
     route_cluster = map_route_cluster(route)
 
@@ -139,7 +141,7 @@ def preprocess_user_input(user_input_dict):
     user_input_dict.update({
         "origin": origin,
         "dest": dest,
-        #"dist_haul": dist_haul,
+        "dist_haul": dist_haul,
         "airline_avg_arr_delay": arr_avg,
         "airline_avg_dep_delay": dep_avg,
         "route_density": route_density,
@@ -204,7 +206,7 @@ def generate_recommendations(shap_values_dict, feature_names, df_input, model_pr
 
     # Extract input values once
     val_dep_hour = df_input["dep_hour"].values[0]
-    #val_dist_haul = df_input["dist_haul"].values[0]
+    val_dist_haul = df_input["dist_haul"].values[0]
     val_month = df_input["month_delay_score"].values[0]
     val_day = df_input["dow_delay_score"].values[0]
     val_airline_arr = df_input["airline_avg_arr_delay"].values[0]
@@ -241,10 +243,10 @@ def generate_recommendations(shap_values_dict, feature_names, df_input, model_pr
             "Flights on this day of the week tend to be more prone to delays.",
             "Traveling on less busy days may reduce delay risk."
         ),
-        #"dist_haul": (
-           # f"Your flight is classified as a '{val_dist_haul}' haul, which affects delay likelihood.",
-            #"Sometimes shorter or longer haul flights have different risk patterns."
-       # ),
+        "dist_haul": (
+            f"Your flight is classified as a '{val_dist_haul}' haul, which affects delay likelihood.",
+            "Sometimes shorter or longer haul flights have different risk patterns."
+        ),
     }
 
     for output_index, shap_values in shap_values_dict.items():
@@ -280,7 +282,7 @@ def generate_recommendations(shap_values_dict, feature_names, df_input, model_pr
 # ------------ USER INPUT FORM -----------
 with st.form("flight_form"):
     airline_name = st.selectbox("Airline", sorted(airline_delay_lookup["airline_name"].unique()))
-    route = st.selectbox("Route", sorted(route_density_lookup["route"].unique()))
+    route = st.selectbox("Route", sorted(route_dist_lookup["route"].unique()))
     month = st.selectbox("Month", list(month_score_map.keys()))
     day_of_week = st.selectbox("Day of Week", list(dow_score_map.keys()))
     dep_hour = st.number_input("Scheduled Departure Hour (0–23)", min_value=0, max_value=23, value=12)
