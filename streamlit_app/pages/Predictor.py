@@ -97,7 +97,8 @@ dow_score_map = {
 # Cache pipeline loading for efficiency
 @st.cache_resource
 def load_pipeline():
-    return joblib.load("logreg_pipeline.joblib")
+    pipeline_path = os.path.join(os.path.dirname(__file__), "..", "logreg_pipeline.joblib")
+    return joblib.load(pipeline_path)
 
 def preprocess_user_input(user_input_dict):
     # Extract airline and route
