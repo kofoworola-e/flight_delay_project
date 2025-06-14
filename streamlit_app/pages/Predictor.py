@@ -312,39 +312,3 @@ if submitted:
         st.markdown("### ✈️ Prediction Result")
         st.write(f"**Departure delay predicted:** {'🟥 Yes' if pred_dep == 1 else '🟩 No'}")
         st.write(f"**Arrival delay predicted:** {'🟥 Yes' if pred_arr == 1 else '🟩 No'}")
-
-        """
-        shap_vals, feature_names = get_shap_values(df_input)
-
-        # Pass model predictions to recommendations
-        recs_dict = generate_recommendations(
-            shap_vals, feature_names, df_input, model_preds=prediction[0]
-        )
-
-        st.subheader("✈️ Recommendations Based on Prediction")
-
-        labels = {0: "Departure Delay", 1: "Arrival Delay"}
-
-        for i, recs in recs_dict.items():
-            st.markdown(f"**🔹 {labels.get(i, f'Output {i}')}**")
-            for r in recs:
-                st.write(r)
-
-        st.markdown("### 📊 Raw SHAP Values for Departure Delay Model")
-        # shap_vals[0] corresponds to departure delay model's SHAP values
-        shap_dep = shap_vals[0][0]
-        shap_dep_df = pd.DataFrame({
-            "Feature": feature_names,
-            "SHAP Value": shap_dep
-        }).sort_values(by="SHAP Value", key=abs, ascending=False)
-        st.dataframe(shap_dep_df)
-
-        st.markdown("### 📊 Raw SHAP Values for Arrival Delay Model")
-        # shap_vals[1] corresponds to arrival delay model's SHAP values
-        shap_arr = shap_vals[1][0]
-        shap_arr_df = pd.DataFrame({
-            "Feature": feature_names,
-            "SHAP Value": shap_arr
-        }).sort_values(by="SHAP Value", key=abs, ascending=False)
-        st.dataframe(shap_arr_df)
-        """
