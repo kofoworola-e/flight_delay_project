@@ -20,7 +20,7 @@ st.write("Enter flight details below to predict if your flight will be delayed."
 @st.cache_data(show_spinner=False)
 def load_lookups_from_drive():
     airline_delay_file_id = "1ed2CeYXgwrWEc-aecGBfwRTBbR-Rkilu"
-    route_dist_file_id = "1aGMpN-hrjbp7PWxk6t9X7v41ecjjxqsR" 
+    route_dist_file_id = "1T6rm_Y-t5a1WwMutJS7PpVwns95qjben" 
     dest_cluster_file_id = "17DMA5-fWipMqQPGCNYD_cXIIuIphTB8Y"
     route_cluster_file_id = "1H8I0YOC6zIIHARBIkumuxcVe0njoo04g"
 
@@ -55,7 +55,8 @@ def map_route_dist(route):
     row = route_dist_lookup[route_dist_lookup["route"] == route]
     return(
         row.iloc[0]['route_density'] if not row.empty else 0,
-        row.iloc[0]['dist_haul'] if not row.empty else 0
+        row.iloc[0]['dist_haul'] if not row.empty else 0,
+        row.iloc[0]['distance'] if not row.empty else 0
     )
 
 def map_dest_cluster(dest):
@@ -116,7 +117,7 @@ def preprocess_user_input(user_input_dict):
 
     # Map airline and route-level features
     arr_avg, dep_avg = map_airline_delay_features(airline)
-    route_density, dist_haul = map_route_dist(route)
+    route_density, dist_haul, distance = map_route_dist(route)
 
     # Map destination and route clusters
     dest_cluster = map_dest_cluster(dest)
@@ -150,7 +151,8 @@ def preprocess_user_input(user_input_dict):
         "is_redeye": is_redeye,
         "time_block_score": time_block_score,
         "month_delay_score": month_score,
-        "dow_delay_score": dow_score
+        "dow_delay_score": dow_score,
+        "distance": distance
     })
 
     # Convert to DataFrame
