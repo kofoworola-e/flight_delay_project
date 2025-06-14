@@ -313,6 +313,7 @@ if submitted:
         st.write(f"**Departure delay predicted:** {'🟥 Yes' if pred_dep == 1 else '🟩 No'}")
         st.write(f"**Arrival delay predicted:** {'🟥 Yes' if pred_arr == 1 else '🟩 No'}")
 
+        """
         shap_vals, feature_names = get_shap_values(df_input)
 
         # Pass model predictions to recommendations
@@ -346,3 +347,4 @@ if submitted:
             "SHAP Value": shap_arr
         }).sort_values(by="SHAP Value", key=abs, ascending=False)
         st.dataframe(shap_arr_df)
+        """
