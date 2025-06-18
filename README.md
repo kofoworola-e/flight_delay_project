@@ -21,6 +21,9 @@ Key insights include delay patterns across **routes**, **airlines**, and **times
 The app is deployed and available here:
 👉 [flightdelayanalytics.streamlit.app](https://flightdelayanalytics.streamlit.app)
 
+Check out my videos on this project:
+👉 [Part 1](https://youtu.be/VYQnYm6wz8o)
+
 ---
 ## 🧰 Tech Stack & Tools
 
